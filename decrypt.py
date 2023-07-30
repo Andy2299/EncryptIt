@@ -1,7 +1,7 @@
+import multiprocessing
 import os
 import subprocess
 import pkg_resources
-import multiprocessing
 from cryptography.fernet import Fernet
 import tkinter as tk
 from tkinter import simpledialog
@@ -41,12 +41,12 @@ if __name__ == '__main__':
     all_files = get_all_files_in_directory(path_to_encrypt)
 
     # Solicitar la contraseña al usuario
-    root = tk.Tk()
-    root.withdraw()
-    password = simpledialog.askstring("Contraseña", "Introduce la contraseña para desencriptar los archivos:", show='*')
-    if password == "contraseña_correcta":
-        key = cargar_key()
-        with multiprocessing.Pool() as pool:
-            pool.starmap(decrypt, [(file, key) for file in all_files])
-    else:
-        print("Contraseña incorrecta.")
+    # root = tk.Tk()
+    # root.withdraw()
+    # password = simpledialog.askstring("Contraseña", "Introduce la contraseña para desencriptar los archivos:", show='*')
+    # if password == "contraseña_correcta":
+    key = cargar_key()
+    with multiprocessing.Pool() as pool:
+        pool.starmap(decrypt, [(file, key) for file in all_files])
+    # else:
+    #     print("Contraseña incorrecta.")
