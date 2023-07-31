@@ -1,4 +1,4 @@
-# Documentación del Proyecto EncryptIt
+# Proyecto EncryptIt
 
 ## Descripción
 
