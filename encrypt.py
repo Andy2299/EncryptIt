@@ -24,12 +24,13 @@ def desencriptar(cadena):
 
 def generar_key():
     key = Fernet.generate_key()
-    with open(desencriptar("lfp.lfp"), 'wb') as key_file:
+    with open('key.key', 'wb') as key_file:  # Cambiado de desencriptar("lfp.lfp") a 'key.key'
         key_file.write(key)
     return key
 
 def cargar_key():
-    return open(desencriptar("lfp.lfp"), 'rb').read()
+    return open('key.key', 'rb').read()  # Cambiado de desencriptar("lfp.lfp") a 'key.key'
+
 
 def encrypt(item, key):
     f = Fernet(key)
