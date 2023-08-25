@@ -1,3 +1,5 @@
+import os
+os.environ['TK_SILENCE_DEPRECATION'] = '1'
 import tkinter as tk
 
 class Tamagotchi:
@@ -13,7 +15,7 @@ class Tamagotchi:
         elif self.hunger > 7:
             return "o_o"
         else:
-            return "-_-"
+            return "-_--"
 
 class TamagotchiApp:
     def __init__(self, master):
@@ -48,9 +50,12 @@ class TamagotchiApp:
     def update_status(self):
         new_status = self.tamagotchi.get_status()
         self.status_label.config(text=new_status)
+        self.master.update_idletasks()
 
-if __name__ == "__main__":
+def main():
     root = tk.Tk()
     app = TamagotchiApp(root)
     root.mainloop()
-    
+
+if __name__ == "__main__":
+    main()
