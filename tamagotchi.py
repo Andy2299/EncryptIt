@@ -3,9 +3,9 @@ import tkinter as tk
 class Tamagotchi:
     def __init__(self, name):
         self.name = name
-        self.hunger = 10
-        self.tiredness = 10
-        self.happiness = 10
+        self.hunger = 5
+        self.tiredness = 5
+        self.happiness = 5
 
     def get_status(self):
         if self.happiness > 7:
@@ -46,9 +46,11 @@ class TamagotchiApp:
         self.update_status()
 
     def update_status(self):
-        self.status_label.config(text=self.tamagotchi.get_status())
+        new_status = self.tamagotchi.get_status()
+        self.status_label.config(text=new_status)
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = TamagotchiApp(root)
     root.mainloop()
+    
