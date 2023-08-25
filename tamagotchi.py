@@ -1,7 +1,8 @@
-import tkinter as tk
-from tkinter import messagebox
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.label import Label
+from kivy.uix.button import Button
 
-# Tamagotchi class definition
 class Tamagotchi:
     def __init__(self, name):
         self.name = name
@@ -9,7 +10,7 @@ class Tamagotchi:
         self.tiredness = 10
         self.happiness = 10
 
-    def get_pet(self):
+    def get_status(self):
         if self.happiness > 7:
             return "^_^"
         elif self.hunger > 7:
@@ -17,49 +18,46 @@ class Tamagotchi:
         else:
             return "-_-"
 
-    def show_status(self):
-        pet = self.get_pet()
-        return f"{pet}\n{self.name} - Hambre: {self.hunger}, Sueño: {self.tiredness}, Felicidad: {self.happiness}"
-
-# GUI Application class definition
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        super().__init__(master)
-        self.master = master
+class TamagotchiApp(App):
+    def build(self):
         self.tamagotchi = Tamagotchi("Tommy")
-        self.pack()
-        self.create_widgets()
+        self.box = BoxLayout(orientation='vertical')
+        
+        self.status_label = Label(text=self.tamagotchi.get_status(), font_size=50)
+        self.box.add_widget(self.status_label)
+        
+        self.button_box = BoxLayout()
+        
+        eat_button = Button(text="Comer")
+        eat_button.bind(on_press=self.feed)
+        self.button_box.add_widget(eat_button)
+        
+        sleep_button = Button(text="Dormir")
+        sleep_button.bind(on_press=self.rest)
+        self.button_box.add_widget(sleep_button)
+        
+        play_button = Button(text="Jugar")
+        play_button.bind(on_press=self.play)
+        self.button_box.add_widget(play_button)
+        
+        self.box.add_widget(self.button_box)
+        
+        return self.box
 
-    def create_widgets(self):
-        self.status = tk.Label(self, text=self.tamagotchi.show_status(), font=("Courier", 14))
-        self.status.pack(side="top")
-
-        self.eat = tk.Button(self, text="Comer", command=self.feed)
-        self.eat.pack(side="left")
-
-        self.sleep = tk.Button(self, text="Dormir", command=self.rest)
-        self.sleep.pack(side="left")
-
-        self.play = tk.Button(self, text="Jugar", command=self.game)
-        self.play.pack(side="left")
-
-    def feed(self):
+    def feed(self, instance):
         self.tamagotchi.hunger = min(10, self.tamagotchi.hunger + 1)
         self.update_status()
 
-    def rest(self):
+    def rest(self, instance):
         self.tamagotchi.tiredness = min(10, self.tamagotchi.tiredness + 1)
         self.update_status()
 
-    def game(self):
+    def play(self, instance):
         self.tamagotchi.happiness = min(10, self.tamagotchi.happiness + 1)
         self.update_status()
 
     def update_status(self):
-        self.status.config(text=self.tamagotchi.show_status())
+        self.status_label.text = self.tamagotchi.get_status()
 
-# Main function to run the application
-if __name__ == '__main__':
-    root = tk.Tk()
-    app = Application(master=root)
-    app.mainloop()
+if __name__ == "__main__":
+    TamagotchiApp().run()
